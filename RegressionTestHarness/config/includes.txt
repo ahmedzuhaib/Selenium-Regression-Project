@@ -1,1 +1,1 @@
-**/com/examples/a/*.*
+**/com/examples/ENTER_SOME_PACKAGE_HERE/*.*
