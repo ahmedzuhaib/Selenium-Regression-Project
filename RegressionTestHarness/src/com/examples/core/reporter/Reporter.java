@@ -1,4 +1,4 @@
-package com.examples.reporter;
+package com.examples.core.reporter;
 
 import java.awt.AWTException;
 
@@ -35,7 +35,7 @@ public class Reporter {
     
     private Map<String, Serializable> testModel;
 
-    public static final String ROOT_TEMPLATE_DIR = "com\\examples\\reporter\\ftlFiles\\";    
+    public static final String ROOT_TEMPLATE_DIR = "com\\examples\\core\\reporter\\ftlFiles\\";    
     public static final String TEST_TEMPLATE = "test.ftl";    
     public String currentTestName;
     private SimpleDateFormat formatter;
