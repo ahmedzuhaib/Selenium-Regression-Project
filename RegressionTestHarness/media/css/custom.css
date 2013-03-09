@@ -1,0 +1,57 @@
+h1 {
+    font: 165% verdana,arial,helvetica;
+    margin: 0 0 5px;
+}
+
+h2 {
+    font: bold 125% verdana,arial,helvetica;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+}
+
+body {
+    color: #000000;
+    font: 68% verdana,arial,helvetica;
+}
+
+.div1{
+  border-right: 1px solid black; width: 53px;
+}
+
+.div2{
+  margin-left: 65px; margin-top: -25px;
+}
+
+.div3{
+margin-left: 500px; background-color: black;  margin-top: -30px; height: 42px;
+}
+
+.navpanelfg{
+   top: -46px!important;
+   left: 557px!important;
+}
+
+.navpanelbg{
+   display:none!important;
+   visibility:hidden!important;
+}
+
+.gallerydescbg{
+  display:none!important;
+   visibility:hidden!important;
+}
+
+.gallerydesctext{
+   top: -23px!important;
+   left: 559!important;
+}
+
+.gallerydesc{
+   top: -37px!important;
+   left: 674px !important;
+}
+
+.gallerydescfg{
+    left: 570px !important;
+    top: 3px !important;
+}

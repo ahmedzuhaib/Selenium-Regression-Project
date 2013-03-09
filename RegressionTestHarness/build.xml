@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Testing" default="test-start" basedir=".">
+	<property file="config/config.properties" prefix="cfg"/>
+	<tstamp>
+		<format property="nowUK" pattern="dd-MM-yyyy-hhmm" locale="en"/>
+	</tstamp>
+	
+	<taskdef resource="testngtasks" classpath="./lib/testng-6.8.jar" />
+	
+	<target name="test-start" depends="compile,check.tests.count" description="Runs the TestNG tests">
+		<testng suitename="Selenium Regression Tests" haltonfailure="false" outputdir="results" 
+			    classpathref="classpath"  delegateCommandSystemProperties="true">
+			<classfileset dir="build" includesfile="config/includes.txt" excludesfile="config/excludes.txt" />
+			<sysproperty key="testsTorun" value="${testsTorun}"/>
+		</testng>
+
+		<!-- RUN ANT STYLE REPORT AS WELL -->
+		<antcall target="run-junit-report" />
+	</target>
+
+	<target name="check.tests.count">
+		<resourcecount property="testsTorun">
+			<fileset dir="src">
+				<includesfile name="config/includes.txt"/>
+				<excludesfile name="config/excludes.txt"/>
+			</fileset>
+		</resourcecount>
+	</target>
+
+	<path id="classpath">
+		<pathelement path="build\classes" />
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="build" includeemptydirs="true"/>
+		<delete dir="results" includeemptydirs="true"/>
+		<delete>
+		    <fileset dir="." includes="*.log"/>
+		</delete>
+	</target>
+
+	<target name="compile" depends="clean,copy">
+		<javac srcdir="src" destdir="build\classes" classpathref="classpath" debug="on" />
+	</target>
+
+	<target name="copy" depends="prepare">
+		<copy todir="build\classes">
+			<fileset dir="src" excludes="**/*.java" />
+		</copy>
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="build" />
+		<mkdir dir="build\classes" />
+		<mkdir dir="results" />
+	</target>
+
+	<target name="report" description="Runs html report">
+		<junitreport todir="results/junitreports">
+			<fileset dir="results/junitreports">
+				<include name="**/TEST-*.xml" />
+			</fileset>
+			<report styledir="xsl" format="frames" todir="results/junitreports" />
+		</junitreport>
+		
+		<antcall target="check.archive.results" />
+		<antcall target="copy.images" />
+	</target>
+
+	<target name="copy.images">
+                <copy todir="results/junitreports/com/examples/images">
+                  <fileset dir="SeleniumTestResults" />
+                </copy>
+		
+				<copy todir="results/junitreports/com/examples/images/media">
+		             <fileset dir="media"/>
+		        </copy>
+		
+               	<delete dir="results/junitreports/com/examples/images/templates" includeemptydirs="true"/>
+				<delete dir="SeleniumTestResults" includeemptydirs="true"/>
+        </target>
+
+	<target name="run-junit-report">
+		<exec executable="cmd">
+			<arg value="/c"/>
+			<arg value="ant.bat"/>
+			<arg value="report"/>
+		</exec>
+	</target>
+
+	<target name="check.archive.results">
+		<condition property="on">
+			<equals arg1="${cfg.archive.results}" arg2="yes" />
+		</condition>
+		<antcall target="archive.results" />
+	</target>
+
+	<target name="archive.results" if="on">
+		<echo>Archiving results....</echo>
+
+		<copy todir="archives/results_${nowUK}">
+			<fileset dir="results"/>
+		</copy>
+	</target>
+
+</project>

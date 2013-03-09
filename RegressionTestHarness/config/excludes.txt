@@ -1,0 +1,2 @@
+**/com/examples/core/*.*
+**/com/examples/reporter/*.*
