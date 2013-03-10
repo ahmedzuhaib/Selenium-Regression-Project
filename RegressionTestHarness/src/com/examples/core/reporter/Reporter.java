@@ -127,7 +127,7 @@ public class Reporter {
 		
         Map<String, String> thisScreenShot = new HashMap<String, String>();
         thisScreenShot.put("image", screenShotName);
-        thisScreenShot.put("description", description);
+        thisScreenShot.put("description", browser + "_"+ description);
         ((SimpleSequence) testModel.get("screenshots")).add(thisScreenShot);        
     }
 }
