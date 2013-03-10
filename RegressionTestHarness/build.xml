@@ -107,9 +107,16 @@
 		</copy>
 	</target>
 	
-	<target name="convert" depends="compile">					  
-		<java classname="com.examples.core.reporter.IDEConverter" fork="true" classpathref="classpath"/>
+	<target name="convert" depends="compile,prompt.choose.browsers">
+		
+		<java classname="com.examples.core.reporter.IDEConverter" fork="true" classpathref="classpath">
+			<sysproperty key="browserChoice"  value="${chosen.browsers}"/>
+		</java>
 		<delete dir="SeleniumConversion" includeemptydirs="true"/>
 	</target>
-
+	
+	<target name="prompt.choose.browsers">		
+			<input validargs="IE,FX,CH,ALL" addproperty="chosen.browsers">Please select the browsers you wish to test against${line.separator}FX for Firefox only ${line.separator}IE for Internet Explorer only ${line.separator}CH for Chrome only ${line.separator}ALL for all browsers listed above:
+			</input>		
+	</target>
 </project>

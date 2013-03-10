@@ -25,6 +25,7 @@ import org.apache.commons.io.FileUtils;
  */
 public class IDEConverter {
 	private File convDir = new File("SeleniumConversion//");
+	private String browserChoice = System.getProperty("browserChoice");
 	private Configuration cfg;
 	private File currentTestDir;
 
@@ -136,6 +137,7 @@ public class IDEConverter {
 
 		testModel = new HashMap<String, Serializable>();
 		testModel.put("package", packageName);
+		testModel.put("browsers", browserChoice);
 		testModel.put("class", className);
 		testModel.put("script", ideScript);
 

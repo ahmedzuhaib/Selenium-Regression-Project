@@ -8,7 +8,7 @@ import com.examples.core.BaseSeleniumTest;
 import com.google.common.base.Supplier;
 import org.apache.log4j.Logger;
 
-@Browsers({ "FX" })
+@Browsers({ "${browsers}" })
 
 public class ${class} extends BaseSeleniumTest {
 	static Logger logger = Logger.getLogger(${class}.class);
