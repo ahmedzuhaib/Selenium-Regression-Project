@@ -56,6 +56,7 @@
 		<mkdir dir="build" />
 		<mkdir dir="build\classes" />
 		<mkdir dir="results" />
+		<mkdir dir="convert" />
 	</target>
 
 	<target name="report" description="Runs html report">
@@ -104,6 +105,11 @@
 		<copy todir="archives/results_${nowUK}">
 			<fileset dir="results"/>
 		</copy>
+	</target>
+	
+	<target name="convert" depends="compile">					  
+		<java classname="com.examples.core.reporter.IDEConverter" fork="true" classpathref="classpath"/>
+		<delete dir="SeleniumConversion" includeemptydirs="true"/>
 	</target>
 
 </project>
