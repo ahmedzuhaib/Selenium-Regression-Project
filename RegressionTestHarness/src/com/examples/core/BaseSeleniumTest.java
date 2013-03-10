@@ -136,8 +136,7 @@ public class BaseSeleniumTest {
 
 	private void addWebDriverInstance(String browserToAdd) {
 
-		for (Supplier<WebDriver> relevantWebDriver : WebDriverSupplier.hashmap
-				.get(browserToAdd)) {
+		for (Supplier<WebDriver> relevantWebDriver : WebDriverSupplier.hashmap.get(browserToAdd)) {
 			arraylist.add(relevantWebDriver);
 		}
 	}
@@ -193,11 +192,9 @@ public class BaseSeleniumTest {
 		if (declaredTestsRun == declaredTests) {
 			if (testsRun == testsTorun) {
 
-				for (String currentWebDriver : WebDriverSupplier.hashmap
-						.keySet()) {
+				for (String currentWebDriver : WebDriverSupplier.hashmap.keySet()) {
 
-					for (Supplier<WebDriver> supplier : WebDriverSupplier.hashmap
-							.get(currentWebDriver)) {
+					for (Supplier<WebDriver> supplier : WebDriverSupplier.hashmap.get(currentWebDriver)) {
 						WebDriver currentDriver = supplier.get();
 
 						if (currentDriver != null) {
@@ -214,7 +211,10 @@ public class BaseSeleniumTest {
 	@AfterMethod
 	public void updateTestMethodsCount() {
 		declaredTestsRun++;
-		selenium.stop();
+		
+		if(selenium != null){
+			selenium.stop();
+		}
 		logger.info("finish TEST " + declaredTestsRun + " out of " + declaredTests + " to run");
 	}
 
