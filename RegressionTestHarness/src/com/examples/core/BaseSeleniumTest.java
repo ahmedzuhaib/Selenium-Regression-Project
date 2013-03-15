@@ -40,11 +40,13 @@ public class BaseSeleniumTest {
 	protected WebDriver currentDriver;
 	private static Reporter reporter;
 	private Browsers testInBrowsers;
-	private int declaredTests;
-	private int declaredTestsRun;
+	private int declaredTestMethods;
+	private int declaredTestMethodsRun;
 	private boolean driversAdded;
 	private String[] browsersToTest;
 	protected Selenium selenium;
+	private int browsersTestedAgainst;
+	private int testMethodsRun;
 
 	public BaseSeleniumTest() {
 		checkBrowsers(this);
@@ -58,16 +60,16 @@ public class BaseSeleniumTest {
 			// first check if the class has Test annotation which means all
 			// methods ARE test methods
 			if (x.getClass().isAnnotationPresent(Test.class)) {
-				declaredTests = x.getClass().getDeclaredMethods().length;
+				declaredTestMethods = x.getClass().getDeclaredMethods().length;
 			} else {
 				Method[] declaredMethods = x.getClass().getDeclaredMethods();
 
 				for (Method currentMethod : declaredMethods) {
 					if (currentMethod.isAnnotationPresent(Test.class)) {
-						declaredTests++;
+						declaredTestMethods++;
 					}
 				}
-				logger.info("total test methods found:" + declaredTests);
+				logger.info("total test methods found:" + declaredTestMethods);
 			}
 
 			browsersToTest = testInBrowsers.value();
@@ -184,14 +186,17 @@ public class BaseSeleniumTest {
 			data[x][1] = WebDriverSupplier.getHostURL();
 			x++;
 		}
+		browsersTestedAgainst = 0;
+		testMethodsRun++;
 		return data;
 	}
 
 	@AfterSuite
 	public void checkLast() {
-		if (declaredTestsRun == declaredTests) {
+		if (declaredTestMethodsRun == declaredTestMethods) {
+			
 			if (testsRun == testsTorun) {
-
+				
 				for (String currentWebDriver : WebDriverSupplier.hashmap.keySet()) {
 
 					for (Supplier<WebDriver> supplier : WebDriverSupplier.hashmap.get(currentWebDriver)) {
@@ -210,12 +215,22 @@ public class BaseSeleniumTest {
 
 	@AfterMethod
 	public void updateTestMethodsCount() {
-		declaredTestsRun++;
 		
+		//TEST METHOD AGAINST A BROWSER
+		browsersTestedAgainst++;
+		
+		//CLOSE IF STARTED
 		if(selenium != null){
 			selenium.stop();
 		}
-		logger.info("finish TEST " + declaredTestsRun + " out of " + declaredTests + " to run");
+		
+		logger.info("finished running " + testMethodsRun + "/" + declaredTestMethods + " DECLARED TESTS against " + browsersTestedAgainst + "/" + arraySize + " BROWSERS defined");
+		
+		//IF WE HAVE RUN THE CURRENT TEST METHOD AGAINST ALL THE DECLARED BROWSERS WE CAN MARK THE TEST METHOD AS COMPLETE
+		if(browsersTestedAgainst == arraySize){
+			declaredTestMethodsRun++;
+		}
+		
 	}
 
 	@AfterClass
